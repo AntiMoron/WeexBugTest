@@ -143,6 +143,7 @@
         weakSelf.weexView = view;
         [weakSelf.view addSubview:weakSelf.weexView];
         [weakSelf layoutWeexView];
+        NSLog(@"instance.onCreate set frame %@ %p", NSStringFromCGRect(weakSelf.weexView.frame), view);
 #ifdef DEBUG
         [weakSelf.view bringSubviewToFront:weakSelf.reloadBtn];
 #endif
@@ -155,7 +156,15 @@
     
     _instance.renderFinish = ^ (UIView *view) {
         //process renderFinish
-        //        NSLog(@"%@", view);
+        NSLog(@"Finish render %p", view);
+        [weakSelf.weexView removeFromSuperview];
+        weakSelf.weexView = view;
+        [weakSelf.view addSubview:weakSelf.weexView];
+        [weakSelf layoutWeexView];
+        NSLog(@"instance.renderFinish set frame %@ %p", NSStringFromCGRect(weakSelf.weexView.frame), view);
+#ifdef DEBUG
+        [weakSelf.view bringSubviewToFront:weakSelf.reloadBtn];
+#endif
     };
     if(self.url) {
         dispatch_async(dispatch_get_main_queue(), ^{
