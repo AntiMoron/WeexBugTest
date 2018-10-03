@@ -88,7 +88,6 @@
 
 -(void)setShowNavBack:(BOOL)showNavBack {
     _showNavBack = showNavBack;
-    self.navigationController.navigationBarHidden = !showNavBack;
 }
 
 -(void) dealloc {
@@ -102,26 +101,15 @@
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
     if([keyPath isEqualToString:@"weexView.frame"]) {
         [self layoutWeexView];
+        NSLog(@"%@", NSStringFromCGRect(self.weexView.frame));
     } else if([keyPath isEqualToString:@"view.frame"]) {
         [self layoutWeexView];
     }
 }
 
--(void) viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
-    [self.instance fireGlobalEvent:@"viewDidDisappear" params:nil];
-}
-
--(void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-    [self.instance fireGlobalEvent:@"viewDidDisappear" params:nil];
-}
-
 -(void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    [self.instance fireGlobalEvent:@"viewDidAppear" params:nil];
     [self.navigationController setNavigationBarHidden:!self.showNavBack animated:YES];
-    self.bgImageView.hidden = !self.enableBackground;
 }
 
 -(void)viewDidLayoutSubviews {
