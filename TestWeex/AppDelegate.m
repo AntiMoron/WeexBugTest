@@ -7,6 +7,12 @@
 //
 
 #import "AppDelegate.h"
+#import <WeexSDK/WeexSDK.h>
+#import "WeexImageHandler.h"
+#import "ViewController.h"
+#import <WeexSDK/WeexSDK.h>
+#import "BTCNavigatorModule.h"
+#import "WeexViewController.h"
 
 @interface AppDelegate ()
 
@@ -17,6 +23,18 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    [WXAppConfiguration setAppGroup:@"BTC"];
+    [WXAppConfiguration setAppName:@"BTC"];
+    [WXAppConfiguration setAppVersion:@"1.0.0"];
+    
+    //init sdk environment
+    [WXSDKEngine initSDKEnvironment];
+    
+    
+    //register the implementation of protocol, optional
+    [WXSDKEngine registerHandler:[[WeexImageHandler alloc] init] withProtocol:@protocol(WXImgLoaderProtocol)];
+    WeexViewController* wvc = [[WeexViewController alloc] initWithURLString:@"http://192.168.0.101:8082/dist/index.js"];
+    self.window.rootViewController = [[ViewController alloc] initWithRootViewController:wvc];
     return YES;
 }
 
